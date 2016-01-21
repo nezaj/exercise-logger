@@ -1,0 +1,11 @@
+# Code output
+build/
+
+# Node Libraries
+node_modules/
+
+# Experiment code
+spike/
+
+# Notes for myself
+TODO.md
