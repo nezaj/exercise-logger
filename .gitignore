@@ -1,5 +1,5 @@
 # Code output
-build/
+build/bundle.js
 
 # Node Libraries
 node_modules/
