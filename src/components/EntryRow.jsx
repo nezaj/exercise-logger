@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 
+import styles from '../styles/Entry.css'
+
 export default class EntryRow extends Component {
   static propTypes = {
     onEditFoodRow: PropTypes.func.isRequired,
@@ -33,7 +35,7 @@ export default class EntryRow extends Component {
 
   renderEditRow = () => {
     return (
-      <input
+      <input className={styles.entryRowInput}
         type='text'
         autoFocus
         defaultValue={this.props.value}
@@ -44,9 +46,10 @@ export default class EntryRow extends Component {
 
   renderRow = () => {
     return (
-      <div>
-        <span onClick={this.beginEditRow}>{ this.props.value }</span>
-        <button onClick={this.props.onDeleteFoodRow}>Delete</button>
+      <div className={styles.entryRow}>
+        <span onClick={this.beginEditRow} >{ this.props.value }</span>
+        <button className={styles.deleteButton}
+          onClick={this.props.onDeleteFoodRow}>Delete</button>
       </div>
     )
   };

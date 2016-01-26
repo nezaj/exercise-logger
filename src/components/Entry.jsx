@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 
 import EntryRow from './EntryRow.jsx'
+import styles from '../styles/Entry.css'
 
 export default class Entry extends Component {
   static propTypes = {
@@ -21,7 +22,7 @@ export default class Entry extends Component {
     let date = this.state.editingDate ? this.renderEditDate() : this.renderDate()
     let foods = this.renderFoodList(this.props.foods)
     return (
-      <div>
+      <div className={styles.entries}>
         <div>
           Day: { date }
           <button onClick={this.props.onDeleteEntry}>Delete</button>
