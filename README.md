@@ -6,6 +6,7 @@ Personal logging tool for exercise/diet made w/ React
 git clone https://github.com/nezaj/exercise-logger
 cd exercise-logger
 npm install
+make build
 make dev
-open localhost:8080
+open http://localhost:8080
 ```
