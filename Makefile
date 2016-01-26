@@ -23,11 +23,12 @@ dev:
 check:
 	$(MAKE) lint
 	$(MAKE) test
+	@echo "Hooray! -- All checks pass"
 
 lint:
 	@echo "Running eslint..."
 	$(NODE_BIN)/eslint --ext .js --ext .jsx src
-	$(NODE_BIN)/eslint test --env mocha
+	$(NODE_BIN)/eslint test
 
 test:
 	@echo "Running tests..."

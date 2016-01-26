@@ -1,8 +1,15 @@
+const path = require('path')
+
+const PATHS = {
+  src: path.join(__dirname, 'src'),
+  build: path.join(__dirname, 'build')
+}
+
 module.exports = {
   context: __dirname,
   entry: './src/app.js',
   output: {
-    path: "./build",
+    path: PATHS.build,
     filename: "bundle.js"
   },
   resolve: {
@@ -12,7 +19,7 @@ module.exports = {
       loaders: [
         {
           test: /\.jsx?$/,
-          exclude: /node_modules/,
+          include: PATHS.src,
           loader: 'babel',
           query: {
             presets: ['es2015', 'react', 'stage-1']

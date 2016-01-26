@@ -1,15 +1,12 @@
 /** Test Entry component */
 import assert from 'assert'
-import { Entry } from '../../src/components/entry'
+import EntryTable from '../../src/components/EntryTable.jsx'
 
 describe('Entry component', () => {
   let entry
-  let default_props = {
-    'foods': []
-  }
 
   beforeEach(() => {
-    entry = new Entry(default_props)
+    entry = new EntryTable()
   })
 
   context('#calculateCalories (foods, calRegex)', () => {
@@ -21,14 +18,14 @@ describe('Entry component', () => {
     })
 
     it('calculates total calories for one food', () => {
-      var one = ['Beef Patty (375) + Veggies (75)']
-      var expected = 450
+      let one = ['Beef Patty (375) + Veggies (75)']
+      let expected = 450
       let actual = entry.calculateCalories(one)
       assert.equal(actual, expected)
     })
 
     it('calculates total calories for multiple foods', () => {
-      var multiple = [
+      let multiple = [
         'Beef Patty (375) + Veggies (75)',
         'Protein Powder (120)',
         'Protein Bar (210)',
@@ -36,7 +33,7 @@ describe('Entry component', () => {
         'Beer (200)',
         'Avocados (550)'
       ]
-      var expected = 2230
+      let expected = 2230
       let actual = entry.calculateCalories(multiple)
       assert.equal(actual, expected)
     })
