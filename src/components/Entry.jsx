@@ -25,20 +25,47 @@ export default class Entry extends Component {
       <div className={styles.entries}>
         <div>
           Day: { date }
-          <button onClick={this.props.onDeleteEntry}>Delete</button>
+          <span className={styles.entryDelete}
+            onClick={this.props.onDeleteEntry}>&#x2715;</span>
         </div>
-        <div>Diet: { this.props.calories }</div>
-        <ul>{ foods }</ul>
-        <button onClick={this.props.onAddFoodRow}>Add Food</button>
+        <span>Diet: { this.props.calories }</span>
+        <div className={styles.entryRowContainer}>
+          <input type='text'
+            className={styles.entryAddFoodInput}
+            onKeyPress={this.addFoodByEnter}
+            placeholder='Today I ate... (300)' />
+          <span className={styles.entryAddFoodButton}
+            onClick={this.addFoodByButton}>
+            Add
+          </span>
+          <ul>{ foods }</ul>
+        </div>
       </div>
     )
   }
+
+  addFoodByButton = (e) => {
+    // XXX: HACK HACK HACK, think of a better way to do this later
+    let foodInput = e.target.parentNode.getElementsByTagName('input')[0]
+    let food = foodInput.value
+    if (food) {
+      this.props.onAddFoodRow(food)
+      foodInput.value = ''
+    }
+  };
+
+  addFoodByEnter = (e) => {
+    if (e.key === 'Enter' && e.target.value) {
+      this.props.onAddFoodRow(e.target.value)
+      e.target.value = ''
+    }
+  };
 
   beginEditDate = () => {
     this.setState({ editingDate: true })
   };
 
-  checkEnter = (e) => {
+  checkEnterDate = (e) => {
     if (e.key === 'Enter') {
       return this.finishEditDate(e)
     }
@@ -74,7 +101,7 @@ export default class Entry extends Component {
         autoFocus
         defaultValue={this.props.date}
         onBlur={this.finishEditDate}
-        onKeyPress={this.checkEnter} />
+        onKeyPress={this.checkEnterDate} />
     )
   };
 

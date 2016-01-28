@@ -46,10 +46,10 @@ export default class EntryRow extends Component {
 
   renderRow = () => {
     return (
-      <div className={styles.entryRow}>
-        <span onClick={this.beginEditRow} >{ this.props.value }</span>
-        <button className={styles.deleteButton}
-          onClick={this.props.onDeleteFoodRow}>Delete</button>
+      <div onClick={this.beginEditRow} className={styles.entryRow}>
+        <span>{ this.props.value }</span>
+        <span className={styles.entryRowDelete}
+          onClick={this.props.onDeleteFoodRow}>&#x2715;</span>
       </div>
     )
   };

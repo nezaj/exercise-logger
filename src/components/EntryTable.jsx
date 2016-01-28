@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import uuid from 'node-uuid'
 
 import Entry from './Entry.jsx'
+import styles from '../styles/Entry.css'
 
 export default class EntryTable extends Component {
   state = {
@@ -32,14 +33,10 @@ export default class EntryTable extends Component {
 
   render () {
     return (
-      <div>
-        <h1>Entries</h1>
-        <div style={{ 'marginBottom': '10px' }}>
-          <button onClick={this.addEntry}>Add Entry</button>
-        </div>
-        <div>
-          { this.renderEntries() }
-        </div>
+      <div className={styles.entryTable}>
+        <h1 style={{'textAlign': 'center'}}>Entries</h1>
+        <button style={{'visibility': 'hidden'}} className={styles.addEntry} onClick={this.addEntry}>Add Entry</button>
+        { this.renderEntries() }
       </div>
     )
   }
@@ -53,8 +50,8 @@ export default class EntryTable extends Component {
     this.setState({ entries: entry.concat(this.state.entries) })
   };
 
-  addFoodRow = (id) => {
-    const defaultFood = {'id': uuid.v4(), 'value': '...'}
+  addFoodRow = (id, value) => {
+    const defaultFood = {'id': uuid.v4(), 'value': value}
     const entries = this.state.entries.map((entry) => {
       if (entry.id === id) { entry.foods = entry.foods.concat(defaultFood) }
       return entry
@@ -101,10 +98,10 @@ export default class EntryTable extends Component {
   renderEntries = () => {
     return this.state.entries.map((entry) => {
       let _foodCalories = entry.foods.map(food => food.value)
-      let calories = this.calculateCalories(_foodCalories)
+      let _totalCalories = this.calculateCalories(_foodCalories)
       return <Entry date={entry.date}
         foods={entry.foods}
-        calories={calories}
+        calories={_totalCalories}
         onAddFoodRow={this.addFoodRow.bind(null, entry.id)}
         onEditDate={this.editDate.bind(null, entry.id)}
         onEditFoodRow={this.editFoodRow.bind(null, entry.id)}

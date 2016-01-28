@@ -7,6 +7,10 @@ const PATHS = {
   build: path.join(__dirname, 'build'),
 }
 
+const cssLoader = 'css-loader?modules' +
+  '&importLoaders=1' +
+  '&localIdentName=[name]__[local]___[hash:base64:5]'
+
 module.exports = {
   context: __dirname,
   entry: './src/app.js',
@@ -30,11 +34,11 @@ module.exports = {
       {
         test: /\.css$/,
         include: PATHS.src,
-        loaders: [
-          'style',
-          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        ]
+        loader: ExtractTextPlugin.extract('style-loader', cssLoader)
       }
     ]
-  }
+  },
+  plugins: [
+    new ExtractTextPlugin('style.css', { allChunks: true }),
+  ]
 };
