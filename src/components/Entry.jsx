@@ -20,25 +20,25 @@ export default class Entry extends Component {
 
   render () {
     let date = this.state.editingDate ? this.renderEditDate() : this.renderDate()
-    let foods = this.renderFoodList(this.props.foods)
+    let entryRows = this.renderFoodList(this.props.foods)
     return (
       <div className={styles.entries}>
-        <div>
-          Day: { date }
+        <div className={styles.entryHeader}>
+          <div>{ date }</div>
+          <small>Calories: { this.props.calories }</small>
           <span className={styles.entryDelete}
             onClick={this.props.onDeleteEntry}>&#x2715;</span>
         </div>
-        <span>Diet: { this.props.calories }</span>
         <div className={styles.entryRowContainer}>
           <input type='text'
             className={styles.entryAddFoodInput}
             onKeyPress={this.addFoodByEnter}
-            placeholder='Today I ate... (300)' />
+            placeholder='Something yummy (300)' />
           <span className={styles.entryAddFoodButton}
             onClick={this.addFoodByButton}>
             Add
           </span>
-          <ul>{ foods }</ul>
+          <ul>{ entryRows }</ul>
         </div>
       </div>
     )
@@ -95,6 +95,7 @@ export default class Entry extends Component {
   };
 
   renderEditDate = () => {
+    // XXX: I might not want to make this editable?
     return (
       <input
         type='text'

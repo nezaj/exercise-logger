@@ -10,7 +10,7 @@
 }
 
 body {
-  background-color: #8e44ad;
+  background-color: #16a085;
 }
 
 /* --------- END Common styles --------- */
@@ -23,12 +23,51 @@ body {
   width: 60%;
 }
 
+.entryTableHeader {
+  margin: 30px auto;
+  max-width: 300px;
+}
+
+.entryTableAddEntryInput {
+  display: inline-block;
+  background-color: rgba(0,0,0,.15);
+  border: none;
+  color: white;
+  font-size: 20px;
+  font-weight: 300;
+  height: 50px;
+  margin-bottom: 10px;
+  padding: 10px;
+  opacity: 0.85;
+  width: 75%;
+}
+
+.entryTableAddEntryButton {
+  display: inline-block;
+  background-color: rgba(0,0,0,.25);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  padding: 15px 15px 13px 15px;
+  text-align: center;
+  width: 25%;
+}
 /* ---------- End EntryTable styles ---------- */
 
 /* ------------ BEGIN Entry styles ----------- */
 .entries {
   font: 200 18px Helvetica, Verdana, sans-serif;
   margin-bottom: 20px;
+}
+
+.entryHeader {
+  text-align: center;
+  color: white;
+  font-weight: 300;
+  font-size: 32px;
 }
 
 .entryDelete {
@@ -67,6 +106,7 @@ body {
   height: 50px;
   margin-bottom: 10px;
   padding: 10px;
+  opacity: 0.85;
   width: 85%;
 }
 

@@ -34,20 +34,46 @@ export default class EntryTable extends Component {
   render () {
     return (
       <div className={styles.entryTable}>
-        <h1 style={{'textAlign': 'center'}}>Entries</h1>
-        <button style={{'visibility': 'hidden'}} className={styles.addEntry} onClick={this.addEntry}>Add Entry</button>
+        <h1 style={{'textAlign': 'center', 'color': 'white'}}>Entries</h1>
+        <div className={styles.entryTableHeader}>
+          <input type='text'
+            className={styles.entryTableAddEntryInput}
+            onKeyPress={this.addEntryByEnter}
+            placeholder='Day: mm/dd/yy' />
+          <span className={styles.entryTableAddEntryButton}
+            onClick={this.addEntryByButton}>
+            New
+          </span>
+        </div>
         { this.renderEntries() }
       </div>
     )
   }
 
-  addEntry = () => {
+  addEntry = (date) => {
     const entry = [{
       id: uuid.v4(),
-      date: '...',
-      foods: [{'id': uuid.v4(), 'value': '...'}]
+      date: date,
+      foods: []
     }]
     this.setState({ entries: entry.concat(this.state.entries) })
+  };
+
+  addEntryByButton = (e) => {
+    // XXX: HACK HACK HACK, think of a better way to do this later
+    let dateInput = e.target.parentNode.getElementsByTagName('input')[0]
+    let date = dateInput.value
+    if (date) {
+      this.addEntry(date)
+      dateInput.value = ''
+    }
+  };
+
+  addEntryByEnter = (e) => {
+    if (e.key === 'Enter' && e.target.value) {
+      this.addEntry(e.target.value)
+      e.target.value = ''
+    }
   };
 
   addFoodRow = (id, value) => {
