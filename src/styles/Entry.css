@@ -23,6 +23,13 @@ body {
   width: 60%;
 }
 
+.entryTableInfo {
+  margin: 30px auto;
+  color: white;
+  text-align: center;
+  font: 200 18px Helvetica, Verdana, sans-serif;
+}
+
 .entryTableHeader {
   margin: 30px auto;
   max-width: 300px;

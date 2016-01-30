@@ -35,6 +35,7 @@ test:
 	$(NODE_BIN)/mocha test \
 		--recursive \
 		--require babel-register \
+		--require css-modules-require-hook \
 		--reporter list
 
 test-watch:
@@ -42,5 +43,6 @@ test-watch:
 	$(NODE_BIN)/mocha test/** \
 		--recursive \
 		--require babel-register \
+		--require css-modules-require-hook \
 		--reporter min \
 		--watch

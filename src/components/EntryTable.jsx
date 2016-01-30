@@ -1,40 +1,32 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import uuid from 'node-uuid'
 
 import Entry from './Entry.jsx'
 import styles from '../styles/Entry.css'
+import { getRecentDate } from '../util.js'
 
 export default class EntryTable extends Component {
+  static propTypes = {
+    initialEntries: PropTypes.array.isRequired
+  };
+
   state = {
-    entries: [
-      {
-        'id': uuid.v4(),
-        'date': '01/17/16',
-        'foods': [
-          {'id': uuid.v4(), 'value': 'Subway (320)'},
-          {'id': uuid.v4(), 'value': 'Wedding food (1000)'},
-          {'id': uuid.v4(), 'value': 'Family Dinner (2000)'}
-        ]
-      },
-      {
-        'id': uuid.v4(),
-        'date': '01/16/16',
-        'foods': [
-          {'id': uuid.v4(), 'value': 'Beef Patty (375) + Veggies (75)'},
-          {'id': uuid.v4(), 'value': 'Protein Powder (120)'},
-          {'id': uuid.v4(), 'value': 'Protein Bar (210)'},
-          {'id': uuid.v4(), 'value': 'Mediterranean Food (700)'},
-          {'id': uuid.v4(), 'value': 'Beer (200)'},
-          {'id': uuid.v4(), 'value': 'Avocados (550)'}
-        ]
-      }
-    ]
+    entries: this.props.initialEntries
   };
 
   render () {
+    let _entries = this.state.entries
+    let _latestDate = new Date(_entries[0].date)
+    let avgSevenDays = this.averageCalories(_entries, 7).toFixed(1)
+    let avgThisWeek = this.averageCaloriesWeek(_entries, _latestDate, 'Mon')
+      .toFixed(1)
+
     return (
       <div className={styles.entryTable}>
-        <h1 style={{'textAlign': 'center', 'color': 'white'}}>Entries</h1>
+        <div className={styles.entryTableInfo}>
+          <div>Average calories last 7 days: { avgSevenDays }</div>
+          <div>Average calories this week: { avgThisWeek }</div>
+        </div>
         <div className={styles.entryTableHeader}>
           <input type='text'
             className={styles.entryTableAddEntryInput}
@@ -76,6 +68,28 @@ export default class EntryTable extends Component {
     }
   };
 
+  averageCalories = (entries, numDays = 7) => {
+    if (entries.length === 0) {
+      return 0
+    }
+    // Sum the latest numDays worth of entries
+    let recent = entries.length < numDays ? entries : entries.slice(0, numDays)
+    let totalCalories = recent.map(entry => {
+      return this.calculateCalories(entry.foods)
+    }).reduce((a, b) => a + b)
+
+    return totalCalories / recent.length
+  };
+
+  averageCaloriesWeek = (entries, date, dayName) => {
+    let recentDate, thisWeek
+    if (entries.length === 0) { return 0 }
+
+    recentDate = getRecentDate(date, dayName)
+    thisWeek = entries.filter(e => new Date(e.date) >= recentDate)
+    return this.averageCalories(thisWeek)
+  };
+
   addFoodRow = (id, value) => {
     const defaultFood = {'id': uuid.v4(), 'value': value}
     const entries = this.state.entries.map((entry) => {
@@ -86,9 +100,10 @@ export default class EntryTable extends Component {
     this.setState({ entries })
   };
 
-  calculateCalories = (foodValues, calRegex = /(\d+)/g) => {
+  calculateCalories = (arrFoodObjs, calRegex = /(\d+)/g) => {
     let calories = 0
-    foodValues.forEach((food) => {
+    arrFoodObjs.map(f => {
+      let food = f.value
       let found
       while (found = calRegex.exec(food)) { // eslint-disable-line no-cond-assign
         calories += parseInt(found[0], 10)
@@ -123,8 +138,7 @@ export default class EntryTable extends Component {
 
   renderEntries = () => {
     return this.state.entries.map((entry) => {
-      let _foodCalories = entry.foods.map(food => food.value)
-      let _totalCalories = this.calculateCalories(_foodCalories)
+      let _totalCalories = this.calculateCalories(entry.foods)
       return <Entry date={entry.date}
         foods={entry.foods}
         calories={_totalCalories}
