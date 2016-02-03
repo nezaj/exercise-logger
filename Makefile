@@ -7,7 +7,7 @@ NODEMON = $(NODE_BIN)/nodemon
 
 .PHONY: \
 	build \
-	dev server \
+	dev dev-client dev-server \
 	check lint test \
 	test-watch
 
@@ -16,14 +16,17 @@ build:
 	$(NODE_BIN)/webpack
 
 dev:
-	@echo "Starting dev server..."
+	$(MAKE) dev-client & $(MAKE) dev-server
+
+dev-client:
+	@echo "Starting client dev-server..."
 	$(NODE_BIN)/webpack-dev-server \
 		--progress --colors \
 		--hot --inline \
 		--content-base build
 
-server:
-	@echo "Starting api server..."
+dev-server:
+	@echo "Starting backend dev-server..."
 	$(NODEMON) --exec $(NODE) --harmony -- src/server/index.js
 
 check:
