@@ -1,7 +1,7 @@
 /* Test application-wide utility methods */
 import assert from 'assert'
 
-import { getRecentDate } from '../src/util.js'
+import { getRecentDate } from '../../src/client/util.js'
 
 describe('getRecentDate', () => {
   it('gets the most recent Monday', () => {

@@ -2,10 +2,12 @@ MAKEFLAGS = --no-print-directory --always-make --silent
 MAKE = make $(MAKEFLAGS)
 
 NODE_BIN = node_modules/.bin
+NODE = $(NODE_BIN)/babel-node
+NODEMON = $(NODE_BIN)/nodemon
 
 .PHONY: \
 	build \
-	dev \
+	dev server \
 	check lint test \
 	test-watch
 
@@ -20,6 +22,10 @@ dev:
 		--hot --inline \
 		--content-base build
 
+server:
+	@echo "Starting api server..."
+	$(NODEMON) --exec $(NODE) --harmony -- src/server/index.js
+
 check:
 	$(MAKE) lint
 	$(MAKE) test
@@ -32,7 +38,7 @@ lint:
 
 test:
 	@echo "Running tests..."
-	$(NODE_BIN)/mocha test \
+	$(NODE_BIN)/mocha 'test/**/*.@(js|jsx)' \
 		--recursive \
 		--require babel-register \
 		--require css-modules-require-hook \
@@ -40,7 +46,7 @@ test:
 
 test-watch:
 	@echo "Watching tests..."
-	$(NODE_BIN)/mocha test/** \
+	$(NODE_BIN)/mocha 'test/**/*.@(js|jsx)' \
 		--recursive \
 		--require babel-register \
 		--require css-modules-require-hook \

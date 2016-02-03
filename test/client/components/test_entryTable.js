@@ -1,8 +1,8 @@
 /* Test EntryTable component */
 import assert from 'assert'
 
-import entries from '../../src/data/sample.js'
-import EntryTable from '../../src/components/EntryTable.jsx'
+import entries from '../../../src/server/data/seed.js'
+import EntryTable from '../../../src/client/components/EntryTable.jsx'
 
 describe('EntryTable component', () => {
   let entryTable

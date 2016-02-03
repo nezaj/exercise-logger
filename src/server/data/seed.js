@@ -1,3 +1,6 @@
+// Seed data for bootstraping app
+/* eslint-disable */
+
 import uuid from 'node-uuid'
 
 const entries = [
