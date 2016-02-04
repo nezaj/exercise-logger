@@ -1,4 +1,4 @@
-// Seed data for bootstraping app
+/* Seed data for bootstraping app */
 /* eslint-disable */
 
 import uuid from 'node-uuid'

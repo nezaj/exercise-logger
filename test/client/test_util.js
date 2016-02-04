@@ -1,4 +1,4 @@
-/* Test application-wide utility methods */
+/* Test client-specific utility methods */
 import assert from 'assert'
 
 import { getRecentDate } from '../../src/client/util.js'

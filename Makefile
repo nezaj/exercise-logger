@@ -41,17 +41,8 @@ lint:
 
 test:
 	@echo "Running tests..."
-	$(NODE_BIN)/mocha 'test/**/*.@(js|jsx)' \
-		--recursive \
-		--require babel-register \
-		--require css-modules-require-hook \
-		--reporter list
+	$(NODE_BIN)/mocha 'test/**/*.@(js|jsx)'
 
 test-watch:
 	@echo "Watching tests..."
-	$(NODE_BIN)/mocha 'test/**/*.@(js|jsx)' \
-		--recursive \
-		--require babel-register \
-		--require css-modules-require-hook \
-		--reporter min \
-		--watch
+	$(NODE_BIN)/mocha 'test/**/*.@(js|jsx)' --watch --reporter min
