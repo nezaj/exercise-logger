@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import _ from 'lodash'
+import React, { Component } from 'react'
+import request from 'superagent'
 import uuid from 'node-uuid'
 
 import Entry from './Entry.jsx'
@@ -6,16 +8,28 @@ import styles from '../styles/Entry.css'
 import { getRecentDate } from '../util.js'
 
 export default class EntryTable extends Component {
-  static propTypes = {
-    initialEntries: PropTypes.array.isRequired
+  state = {
+    entries: {}
   };
 
-  state = {
-    entries: this.props.initialEntries
-  };
+  componentWillMount () {
+    let entriesUrl = 'http://localhost:3000/entries'
+    this.fetchEntries = request.get(entriesUrl, (err, res) => {
+      if (err) { console.log('ERROR') } // XXX: Properly handle this later
+      this.setState({
+        entries: res.body
+      })
+    })
+    console.log('Hello World!')
+  }
 
   render () {
     let _entries = this.state.entries
+    // Render an empty div until entries is populated
+    if (_.isEmpty(_entries)) {
+      return <div/>
+    }
+
     let _latestDate = new Date(_entries[0].date)
     let avgSevenDays = this.averageCalories(_entries, 7).toFixed(1)
     let avgThisWeek = this.averageCaloriesWeek(_entries, _latestDate, 'Mon')

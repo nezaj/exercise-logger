@@ -6,12 +6,9 @@ import EntryTable from '../../../src/client/components/EntryTable.jsx'
 
 describe('EntryTable component', () => {
   let entryTable
-  let props = {
-    initialEntries: entries
-  }
 
   beforeEach(() => {
-    entryTable = new EntryTable(props)
+    entryTable = new EntryTable()
   })
 
   context('#averageCaloriesWeek', () => {
