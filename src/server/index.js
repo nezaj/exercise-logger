@@ -2,6 +2,7 @@ import _ from 'lodash'
 import cors from 'koa-cors'
 import koa from 'koa'
 import logger from 'koa-logger'
+import parse from 'co-body'
 import program from 'commander'
 import route from 'koa-route'
 
@@ -34,15 +35,17 @@ function main (opts) {
   app.use(logger())
 
   // Routes middlewares
+  // TODO: Add a test-cases for these routes!!
   app.use(route.get('/health', health))
   app.use(route.get('/entries', listEntries))
+  app.use(route.del('/entries/:id', deleteEntry))
+  app.use(route.post('/entries/:id', updateEntry))
 
-  // Route handlers
+  /* --------- BEGIN Route handlers --------- */
   function * health () {
     this.body = {'message': 'Everything is awesome'}
   }
 
-  // TODO: Add a test-case for this function
   function * listEntries () {
     let entries = this.store.getEntries()
     let sortedEntries = _.sortBy(entries, (e) => {
@@ -51,6 +54,17 @@ function main (opts) {
 
     this.body = sortedEntries
   }
+
+  function * deleteEntry (id) {
+    this.body = this.store.removeEntry(id)
+  }
+
+  function * updateEntry (id) {
+    let entry = yield parse.json(this)
+    this.body = this.store.updateEntry(id, entry)
+  }
+
+  /* ---------- END Route handlers ---------- */
 
   // Create HTTP server
   let port = process.env.PORT || 3000

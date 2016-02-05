@@ -71,7 +71,7 @@ export class MemoryStore extends StoreInterface {
   updateEntry (id, params) {
     let entry = this.getEntry(id)
     if (entry) {
-      return _.merge(entry, params)
+      return _.extend(entry, params)
     }
   }
 }
