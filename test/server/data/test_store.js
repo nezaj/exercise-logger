@@ -24,7 +24,7 @@ const MOCK_ENTRIES = {[MOCK_ENTRY_ID]: MOCK_ENTRY}
 const MOCK_DATA = {'entries': MOCK_ENTRIES}
 
 const UPDATE_ENTRY_DATE = { 'date': '(Monday): 01/25/16' }
-const UPDATED_ENTRY = _.merge(_.cloneDeep(MOCK_ENTRY), UPDATE_ENTRY_DATE)
+const UPDATED_ENTRY = _.extend(_.cloneDeep(MOCK_ENTRY), UPDATE_ENTRY_DATE)
 
 /* Helper method to truncate MemoryStore data */
 let truncateMemory = (store) => {
