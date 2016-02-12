@@ -16,7 +16,7 @@ const cssLoader = 'css-loader?modules' +
   '&localIdentName=[name]__[local]___[hash:base64:5]'
 
 module.exports = {
-  devtool: 'source-map',  // Helpful for debugging
+  devtool: 'eval',  // Helpful for debugging
   entry: path.join(PATHS.client, 'index.js'),
   output: {
     path: PATHS.build,

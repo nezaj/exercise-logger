@@ -1,12 +1,18 @@
+import path from 'path'
+
 import _ from 'lodash'
-import cors from 'koa-cors'
-import koa from 'koa'
-import logger from 'koa-logger'
-import parse from 'co-body'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import express from 'express'
+import morgan from 'morgan'
 import program from 'commander'
-import route from 'koa-route'
+import ReactDOMServer from 'react-dom/server'
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
 
 import bootstrap from './data/bootstrap'
+import config from '../../webpack.config'
 import seed from './data/seed'
 import { MemoryStore } from './data/store'
 import { UnsupportedStoreError } from './errors'
@@ -21,55 +27,73 @@ function _create_store (store_type) {
 
 function main (opts) {
   // Initialize koa app
-  let app = koa()
+  let app = express()
 
   // Create store
   let store = _create_store(opts.store)
-  if (app.env === 'development') {
+  const env = process.env.NODE_ENV || 'development';
+  if (env === 'development') {
     bootstrap(opts.store, store, seed)
   }
-  app.context.store = store
+  app.store = store
 
-  // Middlewares
+  /* --------- BEGIN Middlewares --------- */
+  // Logging
+  app.use(morgan('dev'))
+
+  // Cross Origin Resource Sharing
   app.use(cors())
-  app.use(logger())
+
+  // Configure static directory
+  const staticDir = path.join(__dirname, '..', '..', 'build')
+  app.use(express.static(staticDir))
+
+  // parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({ extended: false }))
+
+  // parse application/json
+  app.use(bodyParser.json())
 
   // Routes middlewares
-  // TODO: Add a test-cases for these routes!!
-  app.use(route.get('/health', health))
-  app.use(route.get('/entries', listEntries))
-  app.use(route.del('/entries/:id', deleteEntry))
-  app.use(route.post('/entries/:id', updateEntry))
+  app.get('/health', health)
+  app.get('/entries', listEntries)
+  app.delete('/entries/:id', deleteEntry)
+  app.post('/entries/:id', updateEntry)
+
+  /* --------- END Middlewares --------- */
 
   /* --------- BEGIN Route handlers --------- */
-  function * health () {
-    this.body = {'message': 'Everything is awesome'}
+  function health (req, res) {
+    res.json({'message': 'Everything is awesome'})
   }
 
-  function * listEntries () {
-    let entries = this.store.getEntries()
+  function deleteEntry (req, res) {
+    const id = req.params.id
+    let removed = req.app.store.removeEntry(id)
+    res.json(removed)
+  }
+
+  function listEntries (req, res) {
+    let entries = req.app.store.getEntries()
     let sortedEntries = _.sortBy(entries, (e) => {
       return new Date(e.date) * -1 // reverse chronological order
     })
 
-    this.body = sortedEntries
+    res.json(sortedEntries)
   }
 
-  function * deleteEntry (id) {
-    this.body = this.store.removeEntry(id)
+  function updateEntry (req, res) {
+    const id = req.params.id
+    const params = req.body
+    let updated = req.app.store.updateEntry(id, params)
+    res.json(update)
   }
-
-  function * updateEntry (id) {
-    let entry = yield parse.json(this)
-    this.body = this.store.updateEntry(id, entry)
-  }
-
   /* ---------- END Route handlers ---------- */
 
   // Create HTTP server
   let port = process.env.PORT || 3000
   app.listen(port)
-  console.log(`Koa listening on port ${port}`)
+  console.log(`Express listening on port ${port}`)
 }
 
 if (require.main === module) {
