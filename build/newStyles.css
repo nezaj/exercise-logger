@@ -1,0 +1,47 @@
+/* ----------- BEGIN New EntryTable styles ----------- */
+.entry-container {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.entry-date {
+  font-size: 1.5em;
+}
+
+.entry-notes-container,
+.entry-exercise-container,
+.entry-diet-container {
+  margin-top: 15px;
+}
+
+.entry-notes-header,
+.entry-exercise-header,
+.entry-diet-header {
+  font-size: 1.1em;
+}
+
+.entry-notes-collection,
+.entry-exercise-collection,
+.entry-diet-collection {
+  margin-left: 20px;
+}
+
+.entry-notes-collection li:first-child,
+.entry-exercise-collection li:first-child,
+.entry-diet-collection li:first-child {
+  margin-top: 10px;
+}
+
+.entry-notes-collection li:last-child,
+.entry-exercise-collection li:last-child,
+.entry-diet-collection li:last-child {
+  margin-bottom: 5px;
+}
+
+.entry-notes-item,
+.entry-exercise-item,
+.entry-diet-item {
+  margin-left: 10px;
+  line-height: 1.5em;
+  list-style-type: disc;
+}

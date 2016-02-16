@@ -6,7 +6,7 @@ import express from 'express'
 import morgan from 'morgan'
 import program from 'commander'
 
-import { bootstrap, seed, MemoryStore } from './data'
+import { bootstrap, seed2, MemoryStore } from './data'
 import { UnsupportedStoreError } from './errors'
 import { apiRouter, serviceRouter } from './routers'
 
@@ -26,7 +26,7 @@ function main (opts) {
   let store = _create_store(opts.store)
   const env = process.env.NODE_ENV || 'development'
   if (env === 'development') {
-    bootstrap(opts.store, store, seed)
+    bootstrap(opts.store, store, seed2)
   }
   app.store = store
 
@@ -61,7 +61,7 @@ function main (opts) {
 
 if (require.main === module) {
   program
-  .description('Info: Starts the backend koa.js webserver')
+  .description('Info: Start the backend webserver')
   .usage(': babel-node --harmony server.py [options]')
   .option('-s --store <name>',
           'specify type of store (memory|mongo) [memory]', 'memory')

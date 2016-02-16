@@ -27,14 +27,6 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
-    preLoaders: [
-      {
-        // Yell at me if there are lint issues
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        include: [PATHS.client, PATHS.server, PATHS.test]
-      }
-    ],
     loaders: [
       {
         // Lets me use ES6+ in my code!
