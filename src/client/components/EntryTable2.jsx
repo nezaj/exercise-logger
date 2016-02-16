@@ -89,14 +89,23 @@ export default class EntryTable extends Component {
   /* ---------- Handlers --------- */
   handleUpdateDiet = (entryId, oldValue, newValue) => {
     let entry = this.getEntry(entryId)
-    let updatedDiet = entry.diet.map((val) => {
-      if (val === oldValue) {
-        val = newValue
-      }
 
-      return val
-    })
-    entry.diet = updatedDiet
+    // Handle delete
+    if (!newValue) {
+      let idx = entry.diet.indexOf(oldValue)
+      entry.diet.splice(idx, 1)
+
+    // Handle update
+    } else {
+      let updatedDiet = entry.diet.map((val) => {
+        if (val === oldValue) {
+          val = newValue
+        }
+
+        return val
+      })
+      entry.diet = updatedDiet
+    }
 
     this.setState({ entries: this.state.entries })
   };

@@ -105,35 +105,38 @@ class DietRow extends Component {
     let prevItem, nextItem
 
     switch (e.keyCode) {
-      // Commit changes on enter. Will also start editing the next item
+      // Enter: Commit changes. Will also start editing the next item
       // if it exists
       case 13:
+        // XXX: Hack, there is a UX bug with deleting atm, clean up later
+        if (!e.target.value) {
+          this.setState({ editingRow: false })
+          break
+        }
         this.commitEdit(e)
         nextItem = e.target.parentElement.nextSibling
-        if (nextItem) {
+        if (nextItem && e.target.value) {
           nextItem.children[0].click()
         }
         break
 
-      // Exit edit w/o commiting changes on escape key
+      // Esc: Exit edit w/o commiting changes
       case 27:
         this.setState({ editingRow: false })
         break
 
-      // Commit changes and go to previous on up key if item exists
+      // Up: Commit changes and go to previous if item exists
       case 38:
         prevItem = e.target.parentElement.previousSibling
-        if (prevItem) {
-          this.commitEdit(e)
+        if (prevItem && e.target.value) {
           prevItem.children[0].click()
         }
         break
 
-      // Commit changes and go to next item on down key if item exists
+      // Down: Commit changes and go to next item if item exists
       case 40:
         nextItem = e.target.parentElement.nextSibling
-        if (nextItem) {
-          this.commitEdit(e)
+        if (nextItem && e.target.value) {
           nextItem.children[0].click()
         }
         break
