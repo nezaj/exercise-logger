@@ -1,17 +1,11 @@
 import path from 'path'
 
-import _ from 'lodash'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
 import program from 'commander'
-import ReactDOMServer from 'react-dom/server'
-import webpack from 'webpack'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
 
-import config from '../../webpack.config'
 import { bootstrap, seed, MemoryStore } from './data'
 import { UnsupportedStoreError } from './errors'
 import { apiRouter, serviceRouter } from './routers'
@@ -30,7 +24,7 @@ function main (opts) {
 
   // Create store
   let store = _create_store(opts.store)
-  const env = process.env.NODE_ENV || 'development';
+  const env = process.env.NODE_ENV || 'development'
   if (env === 'development') {
     bootstrap(opts.store, store, seed)
   }

@@ -30,7 +30,7 @@ function updateEntry (req, res) {
   const id = req.params.id
   const params = req.body
   let updated = req.app.store.updateEntry(id, params)
-  res.json(update)
+  res.json(updated)
 }
 
 export default router
