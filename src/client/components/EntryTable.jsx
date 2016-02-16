@@ -119,12 +119,13 @@ export default class EntryTable extends Component {
 
   /* ---------- BEGIN Event handlers --------- */
   addEntry = (date) => {
-    const entry = [{
+    const newEntry = {
       id: uuid.v4(),
       date: date,
       foods: []
-    }]
-    this.setState({ entries: entry.concat(this.state.entries) })
+    }
+    this.addEntryToStore(newEntry)
+    this.setState({ entries: [newEntry].concat(this.state.entries) })
   };
 
   addEntryByButton = (e) => {
@@ -199,15 +200,20 @@ export default class EntryTable extends Component {
   /* ----------- END Event handlers --------- */
 
   /* ---------- BEGIN Store methods --------- */
+  addEntryToStore (newEntry) {
+    let url = `http://localhost:3000/api/entries`
+    request.post(url).send(newEntry).end()
+  }
+
   removeEntryFromStore (id) {
     let url = `http://localhost:3000/api/entries/${id}`
     request.del(url).end()
   }
 
-  updateEntryToStore (entry) {
-    let id = entry.id
+  updateEntryToStore (updatedEntry) {
+    let id = updatedEntry.id
     let url = `http://localhost:3000/api/entries/${id}`
-    request.post(url).send(entry).end()
+    request.post(url).send(updatedEntry).end()
   }
 
   /* ----------- END Store methods ---------- */
