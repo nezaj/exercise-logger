@@ -4,7 +4,7 @@ import assert from 'assert'
 import _ from 'lodash'
 import uuid from 'node-uuid'
 
-import { MemoryStore } from '../../../src/server/data/store'
+import { MemoryStore } from '../../../src/server/data'
 
 const MOCK_ENTRY_ID = 'moop'
 const MOCK_ENTRY = {

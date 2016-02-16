@@ -11,11 +11,10 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
-import bootstrap from './data/bootstrap'
 import config from '../../webpack.config'
-import seed from './data/seed'
-import { MemoryStore } from './data/store'
+import { bootstrap, seed, MemoryStore } from './data'
 import { UnsupportedStoreError } from './errors'
+import { apiRouter, serviceRouter } from './routers'
 
 function _create_store (store_type) {
   if (store_type === 'memory') {
@@ -26,7 +25,7 @@ function _create_store (store_type) {
 }
 
 function main (opts) {
-  // Initialize koa app
+  // Initialize app
   let app = express()
 
   // Create store
@@ -54,41 +53,11 @@ function main (opts) {
   // parse application/json
   app.use(bodyParser.json())
 
-  // Routes middlewares
-  app.get('/health', health)
-  app.get('/entries', listEntries)
-  app.delete('/entries/:id', deleteEntry)
-  app.post('/entries/:id', updateEntry)
+  // Route middlewares
+  app.use('/service', serviceRouter)
+  app.use('/api', apiRouter)
 
   /* --------- END Middlewares --------- */
-
-  /* --------- BEGIN Route handlers --------- */
-  function health (req, res) {
-    res.json({'message': 'Everything is awesome'})
-  }
-
-  function deleteEntry (req, res) {
-    const id = req.params.id
-    let removed = req.app.store.removeEntry(id)
-    res.json(removed)
-  }
-
-  function listEntries (req, res) {
-    let entries = req.app.store.getEntries()
-    let sortedEntries = _.sortBy(entries, (e) => {
-      return new Date(e.date) * -1 // reverse chronological order
-    })
-
-    res.json(sortedEntries)
-  }
-
-  function updateEntry (req, res) {
-    const id = req.params.id
-    const params = req.body
-    let updated = req.app.store.updateEntry(id, params)
-    res.json(update)
-  }
-  /* ---------- END Route handlers ---------- */
 
   // Create HTTP server
   let port = process.env.PORT || 3000

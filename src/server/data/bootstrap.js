@@ -1,7 +1,7 @@
 /* Use this module to bootstrap stores with sample data -- useful for dev */
 import { UnsupportedStoreError } from '../errors'
 
-export default function bootstrap (store_type, store, seed) {
+function bootstrap (store_type, store, seed) {
   if (store_type === 'memory') {
     bootstrapMemory(store, seed)
   } else {
@@ -18,3 +18,5 @@ function bootstrapMemory (store, seed) {
   }
   store.data = data
 }
+
+export default bootstrap

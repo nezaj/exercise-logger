@@ -17,7 +17,7 @@ export default class EntryTable extends Component {
   };
 
   componentDidMount () {
-    let entriesUrl = 'http://localhost:3000/entries'
+    let entriesUrl = 'http://localhost:3000/api/entries'
     this.fetchEntries = request.get(entriesUrl, (err, res) => {
       if (err) { console.log('ERROR') } // XXX: Properly handle this later
       this.setState({
@@ -200,13 +200,13 @@ export default class EntryTable extends Component {
 
   /* ---------- BEGIN Store methods --------- */
   removeEntryFromStore (id) {
-    let url = `http://localhost:3000/entries/${id}`
+    let url = `http://localhost:3000/api/entries/${id}`
     request.del(url).end()
   }
 
   updateEntryToStore (entry) {
     let id = entry.id
-    let url = `http://localhost:3000/entries/${id}`
+    let url = `http://localhost:3000/api/entries/${id}`
     request.post(url).send(entry).end()
   }
 
